@@ -16,9 +16,14 @@
 export function shallowEquals<T>(objA: T, objB: T): boolean {
   // null, undifined
   if (objA === null && objB === null) return true;
-  if (objA === null || objB === null) return false;
-  if (objA === null && objB === undefined) return false;
-  if (objA === undefined && objB === null) return false;
+  if (objA === undefined && objB === undefined) return true;
+  if (
+    objA === null ||
+    objB === null ||
+    objA === undefined ||
+    objB === undefined
+  )
+    return false;
 
   // 배열
   if (Array.isArray(objA) && Array.isArray(objB)) {
