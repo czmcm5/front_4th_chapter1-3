@@ -14,43 +14,32 @@
  * 얕은 비교는 객체의 1단계 속성 값까지 비교하는 것을 의미한다.
  */
 export function shallowEquals<T>(objA: T, objB: T): boolean {
-  // null, undifined
-  if (objA === null && objB === null) return true;
-  if (objA === undefined && objB === undefined) return true;
-  if (
-    objA === null ||
-    objB === null ||
-    objA === undefined ||
-    objB === undefined
-  )
-    return false;
+  if (objA === objB) return true;
 
-  // 배열
   if (Array.isArray(objA) && Array.isArray(objB)) {
-    let i;
-    for (i = 0; i < objA.length; i++) {
-      if (objA[i] !== objB[i]) {
-        return false;
-      }
-    }
-    return true;
+    if (objA.length !== objB.length) return false;
+
+    return objA.every((v, idx) => v === objB[idx]);
   }
 
-  // 배열 외 객체
-  if (typeof objA === "object" && typeof objB === "object") {
-    const objA_keys = Object.keys(objA).sort();
-    const objB_keys = Object.keys(objB).sort();
-    const objA_values = Object.values(objA).sort();
-    const objB_values = Object.values(objB).sort();
+  if (
+    typeof objA === "object" &&
+    typeof objB === "object" &&
+    objA !== null &&
+    objB !== null
+  ) {
+    const a = Object.entries(objA);
+    const b = Object.entries(objB);
 
-    let i;
-    for (i = 0; i < objA_keys.length; i++) {
-      if (objA_keys[i] !== objB_keys[i] || objA_values[i] !== objB_values[i]) {
-        return false;
-      }
-    }
-    return true;
+    if (a.length !== b.length) return false;
+
+    return a.every(([key, value]) => objB[key] === value);
   }
+  return false;
+}
 
-  return objA == objB;
+function shallowEquals2<T>(objA: T, objB: T): boolean {
+  return baseEquals(objA, objB, (a, b) => {
+    return a === b;
+  });
 }

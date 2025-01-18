@@ -9,27 +9,26 @@
  *    - 재귀적으로 각 속성에 대해 deepEquals 호출
  */
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  if (JSON.stringify(objA) === JSON.stringify(objB)) return true;
+  if (objA === objB) return true;
 
-  if (
-    objA !== null &&
-    objB !== null &&
-    typeof objA === "object" &&
-    typeof objB === "object"
-  ) {
-    const objA_keys = Object.keys(objA).sort();
-    const objB_keys = Object.keys(objB).sort();
-    const objA_values = Object.values(objA).sort();
-    const objB_values = Object.values(objB).sort();
+  if (Array.isArray(objA) && Array.isArray(objB)) {
+    if (objA.length !== objB.length) return false;
 
-    let i;
-    for (i = 0; i < objA_keys.length; i++) {
-      if (objA_keys[i] !== objB_keys[i] || objA_values[i] !== objB_values[i]) {
-        return false;
-      }
-    }
-    return true;
+    return objA.every((v, idx) => deepEquals(v, objB[idx]));
   }
 
-  return objA === objB;
+  if (
+    typeof objA === "object" &&
+    typeof objB === "object" &&
+    objA !== null &&
+    objB !== null
+  ) {
+    const a = Object.entries(objA);
+    const b = Object.entries(objB);
+
+    if (a.length !== b.length) return false;
+
+    return a.every(([key, value]) => deepEquals(objB[key], value));
+  }
+  return false;
 }
