@@ -37,9 +37,3 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
   }
   return false;
 }
-
-function shallowEquals2<T>(objA: T, objB: T): boolean {
-  return baseEquals(objA, objB, (a, b) => {
-    return a === b;
-  });
-}
