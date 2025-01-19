@@ -33,3 +33,6 @@ function shallowEquals2<T>(objA: T, objB: T): boolean {
 function deepEquals2<T>(objA: T, objB: T): boolean {
   return baseEquals(objA, objB, baseEquals); // 재귀함수 사용
 }
+
+console.log(shallowEquals2(1, 1));
+console.log(deepEquals2(1, 1));
