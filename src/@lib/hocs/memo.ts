@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { shallowEquals } from "../equalities";
 import React, { ComponentType, useRef } from "react";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ) {
   const MemoComponent = (props: P) => {
     const preProps = useRef<P | null>(null);
